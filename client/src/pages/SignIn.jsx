@@ -1,14 +1,14 @@
 import axios from 'axios';
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-// import { AuthContext } from '../Contexts/AuthContext'; 
+import { AuthContext } from '../Contexts/AuthContext'; 
 const VITE_API_BASEURL = import.meta.env.VITE_API_BASEURL;
 
 function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-//   const { setIsAuth, setToken, setUserName } = useContext(AuthContext);
+  const { setIsAuth, setToken, setUserName,setRole } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,14 +20,16 @@ function SignIn() {
 
       console.log("res", response);
 
-      const { token, name } = response.data;
+      const { token, name,role } = response.data;
 
       if (token) {
         localStorage.setItem('authToken', token);
         localStorage.setItem('userName', name);
+        localStorage.setItem('role', role);
 
         setToken(token);
         setUserName(name);
+        setRole(role);
         setIsAuth(true);
 
         navigate('/');
@@ -45,7 +47,7 @@ function SignIn() {
 
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-2 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
         <p className="mt-2 text-center text-sm text-gray-600">

@@ -54,12 +54,6 @@ const HeroSection = () => {
             >
               View Events
             </Link>
-            <Link
-              to="/clubs"
-              className="border border-emerald-600 text-emerald-700 hover:bg-emerald-100 font-semibold px-6 py-3 rounded-lg transition"
-            >
-              Join a Club
-            </Link>
           </div>
         </div>
 
