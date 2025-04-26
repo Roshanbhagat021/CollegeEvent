@@ -53,7 +53,7 @@ const Header = () => {
           </NavLink>
           {role=="admin" && <>
             <NavLink
-            to="/events"
+            to="/create-events"
             className={({ isActive }) =>
               `transition duration-300 hover:scale-105 ${
                 isActive ? "text-yellow-300 font-semibold" : "text-emerald-100 hover:text-white"
@@ -133,6 +133,22 @@ const Header = () => {
           >
             Events
           </NavLink>
+          {role=="admin"&& <>
+            <NavLink
+            to="/create-events"
+            onClick={toggleMenu}
+            className={({ isActive }) =>
+              `block w-full text-center rounded-md px-4 py-2 transition duration-300 ${
+                isActive
+                  ? "bg-yellow-300 text-emerald-900 font-semibold"
+                  : "bg-emerald-600 text-emerald-100 hover:bg-emerald-500 hover:text-white"
+              }`
+            }
+          >
+            Create Events
+          </NavLink>
+          </>}
+       
 
           {isAuth ? (
             <>

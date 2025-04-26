@@ -4,6 +4,7 @@ import Events from "../pages/Events";
 import Clubs from "../pages/Clubs";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
+import CreateEvent from "../pages/CreateEvent";
 
 const routes = [
   {
@@ -19,6 +20,10 @@ const routes = [
       {
         path: "/signup",
         element: <SignUp />,
+      },
+      {
+        path: "/create-events",
+        element: <CreateEvent />,
       },
     ],
   },

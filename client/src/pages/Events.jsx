@@ -1,169 +1,210 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import image1 from "../assets/event1.png"
+import React, { useState, useEffect, useContext } from 'react';
+import axios from 'axios';
+import image1 from "../assets/event1.png";
+import { AuthContext } from '../Contexts/AuthContext';
 
-const eventsData = [
-    {
-      id: 1,
-      name: 'Hackathon 2025',
-      club: 'Coding Club',
-      description: '12-hour coding marathon with exciting prizes.',
-      date: '2025-05-01',
-      image: 'https://via.placeholder.com/300x150?text=Hackathon',
-    },
-    {
-      id: 2,
-      name: 'Dance Night',
-      club: 'Cultural Club',
-      description: 'Show off your moves under the spotlight.',
-      date: '2025-05-05',
-      image: 'https://via.placeholder.com/300x150?text=Dance+Night',
-    },
-    {
-      id: 3,
-      name: 'Photography Workshop',
-      club: 'Photography Club',
-      description: 'Learn the art of storytelling through lenses.',
-      date: '2025-05-10',
-      image: 'https://via.placeholder.com/300x150?text=Photography',
-    },
-    {
-      id: 4,
-      name: 'AI & ML Talk',
-      club: 'Coding Club',
-      description: 'Deep dive into Artificial Intelligence and Machine Learning.',
-      date: '2025-05-12',
-      image: 'https://via.placeholder.com/300x150?text=AI+ML+Talk',
-    },
-    {
-      id: 5,
-      name: 'Drama Play: Hamlet',
-      club: 'Dramatics Club',
-      description: 'A modern take on the classic Shakespearean tragedy.',
-      date: '2025-05-15',
-      image: 'https://via.placeholder.com/300x150?text=Hamlet',
-    },
-    {
-      id: 6,
-      name: 'Robotics Expo',
-      club: 'Robotics Club',
-      description: 'Showcasing student-built bots and automation projects.',
-      date: '2025-05-17',
-      image: 'https://via.placeholder.com/300x150?text=Robotics+Expo',
-    },
-    {
-      id: 7,
-      name: 'Open Mic Night',
-      club: 'Literary Club',
-      description: 'Poetry, storytelling, and music by students.',
-      date: '2025-05-18',
-      image: 'https://via.placeholder.com/300x150?text=Open+Mic+Night',
-    },
-    {
-      id: 8,
-      name: 'Business Pitch Fest',
-      club: 'Entrepreneurship Club',
-      description: 'Pitch your startup idea and win funding.',
-      date: '2025-05-20',
-      image: 'https://via.placeholder.com/300x150?text=Pitch+Fest',
-    },
-    {
-      id: 9,
-      name: 'Fitness Challenge',
-      club: 'Sports Club',
-      description: 'Push your limits in strength and endurance games.',
-      date: '2025-05-22',
-      image: 'https://via.placeholder.com/300x150?text=Fitness+Challenge',
-    },
-    {
-      id: 10,
-      name: 'Movie Screening',
-      club: 'Film Club',
-      description: 'Special screening of a student-made short film.',
-      date: '2025-05-24',
-      image: 'https://via.placeholder.com/300x150?text=Movie+Screening',
-    },
-    {
-      id: 11,
-      name: 'Art Exhibition',
-      club: 'Art Club',
-      description: 'Display of paintings and sculptures by campus artists.',
-      date: '2025-05-26',
-      image: 'https://via.placeholder.com/300x150?text=Art+Exhibition',
-    },
-    {
-      id: 12,
-      name: 'Tech Quiz Bowl',
-      club: 'Coding Club',
-      description: 'Battle of tech brains in a fun quiz format.',
-      date: '2025-05-28',
-      image: 'https://via.placeholder.com/300x150?text=Tech+Quiz',
-    },
-    
-  ];
-  
 const Events = () => {
-    const [searchTerm, setSearchTerm] = useState('');
-    const [selectedClub, setSelectedClub] = useState('All');
-  
-    const uniqueClubs = ['All', ...new Set(eventsData.map(event => event.club))];
-  
-    const filteredEvents = eventsData.filter(event => {
-      const matchesSearch = event.name.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesClub = selectedClub === 'All' || event.club === selectedClub;
-      return matchesSearch && matchesClub;
-    });
-  
-    return (
-      <div className="p-4 max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">Events</h1>
-  
-        
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-          <input
-            type="text"
-            placeholder="Search events..."
-            className="border border-gray-300 rounded-lg px-4 py-2 w-full sm:w-1/2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-  
-          <select
-            className="border border-gray-300 rounded-lg px-4 py-2 w-full sm:w-1/4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={selectedClub}
-            onChange={(e) => setSelectedClub(e.target.value)}
-          >
-            {uniqueClubs.map((club, index) => (
-              <option key={index} value={club}>{club}</option>
-            ))}
-          </select>
-        </div>
-  
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {filteredEvents.map(event => (
-            <div key={event.id} className="border border-gray-300 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 bg-white">
-              <img src={image1} alt={event.name} className="w-full h-40 object-cover rounded-t-xl" />
-              <div className="p-4">
-                <h2 className="text-xl font-semibold text-gray-800">{event.name}</h2>
-                <p className="text-sm text-gray-500 mb-2">{event.club} • {event.date}</p>
-                <p className="text-gray-700 text-sm mb-4">{event.description}</p>
-                <Link
-                  to={`/event-details/${event.id}`} 
-                  className="block px-4 py-2  text-emerald-600 text-center rounded-lg"
-                >
-                  View Details
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-  
-        {/* No Results */}
-        {filteredEvents.length === 0 && (
-          <p className="text-center mt-10 text-gray-500">No events found.</p>
-        )}
-      </div>
-    );
+  const [eventsData, setEventsData] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedClub, setSelectedClub] = useState('All');
+  const [error, setError] = useState('');
+  const [registrationError, setRegistrationError] = useState('');
+  const { token } = useContext(AuthContext);
+
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
   };
+
+  useEffect(() => {
+    const fetchEventsData = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/event');
+        setEventsData(response.data.events);
+        if (response.data.events.length > 0) {
+          setSelectedEvent(response.data.events[0]);
+        }
+      } catch (err) {
+        setError('Failed to load events. Please try again later.');
+      }
+    };
+
+    fetchEventsData();
+  }, []);
+
+  const uniqueClubs = ['All', ...new Set(eventsData.map(event => event.club))];
+
+  const filteredEvents = eventsData.filter(event => {
+    const matchesSearch = event.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesClub = selectedClub === 'All' || event.club === selectedClub;
+    return matchesSearch && matchesClub;
+  });
+
+  const handleSelectEvent = (event) => {
+    setSelectedEvent(event);
+  };
+
+  const handleRegisterParticipant = async () => {
+    if (!token) {
+      setRegistrationError('You must be logged in to register.');
+      return;
+    }
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/event/increment-participant/${selectedEvent._id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          }
+        }
+      );
+      if (response.data.msg=="Participant count incremented!") {
+        setSelectedEvent(prevEvent => ({
+          ...prevEvent,
+          participantsCount: prevEvent.participantsCount + 1
+        }));
+        setRegistrationError(''); 
+      }
+    } catch (err) {
+      setRegistrationError('Failed to register as participant. Please try again later.');
+    }
+  };
+
+  const handleRegisterVolunteer = async () => {
+    if (!token) {
+      setRegistrationError('You must be logged in to register.');
+      return;
+    }
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/event/increment-volunteer/${selectedEvent._id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          }
+        }
+      );
+      if (response.data.msg=="Volunteer count incremented!") {
+        setSelectedEvent(prevEvent => ({
+          ...prevEvent,
+          volunteersCount: prevEvent.volunteersCount + 1
+        }));
+        setRegistrationError(''); 
+      }
+    } catch (err) {
+      setRegistrationError('Failed to register as participant. Please try again later.');
+    }
+  };
+
+  return (
+    <div className="max-w-7xl mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-6">Events</h1>
+
+      {error && <p className="text-red-500 mb-4">{error}</p>}
+
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <input
+          type="text"
+          placeholder="Search events..."
+          className="border border-gray-300 rounded-lg px-4 py-2 w-full sm:w-1/2 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+
+        <select
+          className="border border-gray-300 rounded-lg px-4 py-2 w-full sm:w-1/4 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          value={selectedClub}
+          onChange={(e) => setSelectedClub(e.target.value)}
+        >
+          {uniqueClubs.map((club, index) => (
+            <option key={index} value={club}>{club}</option>
+          ))}
+        </select>
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-6">
+        <div className="md:w-1/3 bg-white border border-gray-300 rounded-xl overflow-y-auto max-h-[100vh] p-4">
+          {filteredEvents.length === 0 ? (
+            <p className="text-gray-500">No events found.</p>
+          ) : (
+            filteredEvents.map(event => (
+              <div
+                key={event._id}
+                onClick={() => handleSelectEvent(event)}
+                className={`cursor-pointer p-4 mb-4 rounded-lg transition duration-300 ${selectedEvent?._id === event._id ? "bg-emerald-100 border border-emerald-400" : "hover:bg-gray-200 bg-gray-100"}`}
+              >
+                <h2 className="text-lg font-semibold text-gray-800">{event.name}</h2>
+                <p className="text-sm text-gray-500">{formatDate(event.date)}</p>
+                <p className="text-sm text-emerald-600">{event.club}</p>
+              </div>
+            ))
+          )}
+        </div>
+
+        <div className="md:w-2/3 bg-white border border-gray-300 rounded-xl p-6 shadow-lg">
+          {selectedEvent ? (
+            <>
+              <img
+                src={image1}
+                alt={selectedEvent.name}
+                className="w-full h-64 object-cover rounded-lg mb-6"
+              />
+              <h2 className="text-3xl font-bold text-emerald-700 mb-2">{selectedEvent.name}</h2>
+              <p className="text-gray-500 mb-2">{selectedEvent.club} • {formatDate(selectedEvent.date)}</p>
+              <p className="text-gray-700 mb-4">{selectedEvent.description}</p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                <div>
+                  <h4 className="font-semibold text-gray-800">Venue:</h4>
+                  <p className="text-gray-600">{selectedEvent.venue}</p>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-gray-800">Timing:</h4>
+                  <p className="text-gray-600">{selectedEvent.time}</p>
+                </div>
+                <div className="sm:col-span-2">
+                  <h4 className="font-semibold text-gray-800">Guest(s):</h4>
+                  <p className="text-gray-600">{selectedEvent.guests}</p>
+                </div>
+              </div>
+
+              <div className="flex gap-6 mb-6">
+                <div className="flex-1">
+                  <h4 className="font-semibold text-gray-800">Participants:</h4>
+                  <p className="text-gray-600">{selectedEvent.participantsCount || 0}</p>
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-semibold text-gray-800">Volunteers:</h4>
+                  <p className="text-gray-600">{selectedEvent.volunteersCount || 0}</p>
+                </div>
+              </div>
+
+              {registrationError && <p className="text-red-500 mb-4">{registrationError}</p>}
+
+              <div className="flex gap-4">
+                <button
+                  className="bg-emerald-600 text-white px-6 py-2 rounded-lg hover:bg-emerald-700 transition duration-300"
+                  onClick={handleRegisterParticipant}
+                >
+                  Register as Participant
+                </button>
+                <button className="bg-emerald-500 text-white px-6 py-2 rounded-lg hover:bg-emerald-600 transition duration-300"
+                onClick={handleRegisterVolunteer}>
+                  Register as Volunteer
+                </button>
+              </div>
+            </>
+          ) : (
+            <p className="text-gray-500">Select an event to view details</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default Events;
