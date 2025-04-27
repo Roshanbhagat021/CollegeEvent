@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import image1 from "../assets/event1.png";
 import { AuthContext } from '../Contexts/AuthContext';
+const VITE_API_BASEURL = import.meta.env.VITE_API_BASEURL;
 
 const Events = () => {
   const [eventsData, setEventsData] = useState([]);
@@ -21,7 +22,7 @@ const Events = () => {
   useEffect(() => {
     const fetchEventsData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/event');
+        const response = await axios.get( `${VITE_API_BASEURL}/event`);
         setEventsData(response.data.events);
         if (response.data.events.length > 0) {
           setSelectedEvent(response.data.events[0]);
@@ -53,7 +54,7 @@ const Events = () => {
     }
     try {
       const response = await axios.post(
-        `http://localhost:8080/event/increment-participant/${selectedEvent._id}`,
+        `${VITE_API_BASEURL}/event/increment-participant/${selectedEvent._id}`,
         {},
         {
           headers: {
@@ -80,7 +81,7 @@ const Events = () => {
     }
     try {
       const response = await axios.post(
-        `http://localhost:8080/event/increment-volunteer/${selectedEvent._id}`,
+        `${VITE_API_BASEURL}/event/increment-volunteer/${selectedEvent._id}`,
         {},
         {
           headers: {

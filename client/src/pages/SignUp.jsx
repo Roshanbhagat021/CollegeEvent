@@ -14,7 +14,7 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (registerAs === "admin" && secretKey !== "THISisADMIN") {
+    if (registerAs === "admin" && secretKey !== "ADMIN-ADMIN") {
       alert("Invalid secret key for admin registration!");
       return;
     }
@@ -123,6 +123,7 @@ function SignUp() {
                     className="w-full px-3 py-2 border rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   />
                 </div>
+                <p className="block text-[10px] font-medium text-[black]" >Demo Secret-Key: ADMIN-ADMIN</p>
               </div>
             )}
 

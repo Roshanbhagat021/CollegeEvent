@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../Contexts/AuthContext';
+const VITE_API_BASEURL = import.meta.env.VITE_API_BASEURL;
 
 const CreateEvent = () => {
   const { token } = useContext(AuthContext);
@@ -44,7 +45,7 @@ const CreateEvent = () => {
     
 
     try {
-      const response = await axios.post('http://localhost:8080/event/create', event, {
+      const response = await axios.post(`${VITE_API_BASEURL}/event/create`, event, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
